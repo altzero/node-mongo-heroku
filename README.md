@@ -1,8 +1,6 @@
-# node-js-getting-started
+# node.js postgres starter app
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
-
-This application supports the [Getting Started with Node on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
+A barebones Node.js app using [Express 4](http://expressjs.com/) that runs on heroku.
 
 ## Running Locally
 
@@ -13,20 +11,10 @@ $ git clone git@github.com:heroku/node-js-getting-started.git # or clone your ow
 $ cd node-js-getting-started
 $ npm install
 $ npm start
+$ heroku local web
 ```
 
 Your app should now be running on [localhost:5000](http://localhost:5000/).
-
-## Deploying to Heroku
-
-```
-$ heroku create
-$ git push heroku master
-$ heroku open
-```
-or
-
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 ## Documentation
 
