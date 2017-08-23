@@ -1,4 +1,4 @@
-# node.js postgres starter app
+# node.js mongo starter app
 
 A barebones Node.js app using [Express 4](http://expressjs.com/) that runs on heroku.
 
