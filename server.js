@@ -8,10 +8,10 @@ var CONTACTS_COLLECTION = "contacts";
 var app = express();
 app.use(bodyParser.json());
 
-// Create a database variable outside of the database connection callback to reuse the connection pool in your app.
+// Create a database variable outside of the
+// database connection callback to reuse the connection pool in your app.
 var db;
 
-// Connect to the database before starting the application server.
 mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
   if (err) {
     console.log(err);
@@ -29,13 +29,14 @@ mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
   });
 });
 
-// CONTACTS API ROUTES BELOW
-
-// Generic error handler used by all endpoints.
+// Generic error handler
 function handleError(res, reason, message, code) {
   console.log("ERROR: " + reason);
   res.status(code || 500).json({"error": message});
 }
+
+
+// CONTACTS API ROUTES BELOW
 
 /*  "/api/contacts"
  *    GET: finds all contacts
