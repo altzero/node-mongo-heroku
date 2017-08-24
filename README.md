@@ -25,11 +25,11 @@ Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cl
 
 ```sh
 $ npm install
-$ npm start
-$ heroku local web
+$ npm run start-dev
 ```
 
-Your app should now be running on [localhost:5000](http://localhost:5000/).
+Your app should now be running via nodemon (detects local updates) on [localhost:5000](http://localhost:5000/).
+
 
 ## Documentation
 
