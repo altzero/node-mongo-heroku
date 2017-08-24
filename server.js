@@ -1,9 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-var mongodb = require("mongodb");
-var ObjectID = mongodb.ObjectID;
-
-var CONTACTS_COLLECTION = "contacts";
+var mongoUtil = require('./mongo_util');
+var ObjectID = require( 'mongodb' ).ObjectID;
 
 var app = express();
 app.use(bodyParser.json());
@@ -11,27 +9,13 @@ app.use(bodyParser.json());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-
-// Create a database variable outside of the
-// database connection callback to reuse the connection pool in your app.
-var db;
-
-mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
-  if (err) {
-    console.log(err);
-    process.exit(1);
-  }
-
-  // Save database object from the callback for reuse.
-  db = database;
-  console.log("Database connection ready");
-
-  // Initialize the app.
+mongoUtil.connectToServer( function( err ) {
   var server = app.listen(process.env.PORT || 8080, function () {
     var port = server.address().port;
-    console.log("App now running on port", port);
+    console.log('App now running on port', port);
   });
 });
+
 
 // Generic error handler
 function handleError(res, reason, message, code) {
@@ -52,7 +36,8 @@ app.get('/', function(request, response) {
  */
 
 app.get("/api/contacts", function(req, res) {
-  db.collection(CONTACTS_COLLECTION).find({}).toArray(function(err, docs) {
+  var db = mongoUtil.getDb();
+  db.collection(mongoUtil.getCollectionName()).find({}).toArray(function(err, docs) {
     if (err) {
       handleError(res, err.message, "Failed to get contacts.");
     } else {
@@ -68,7 +53,8 @@ app.post("/api/contacts", function(req, res) {
   if (!req.body.name) {
     handleError(res, "Invalid user input", "Must provide a name.", 400);
   } else {
-    db.collection(CONTACTS_COLLECTION).insertOne(newContact, function(err, doc) {
+    var db = mongoUtil.getDb();
+    db.collection(mongoUtil.getCollectionName()).insertOne(newContact, function(err, doc) {
       if (err) {
         handleError(res, err.message, "Failed to create new contact.");
       } else {
@@ -76,8 +62,26 @@ app.post("/api/contacts", function(req, res) {
       }
     });
   }
+});
 
 
+
+app.get("/api/upsert/:id", function(req, res) {
+
+  var contact_id = req.params.id;
+  var db = mongoUtil.getDb();
+  db.collection(mongoUtil.getCollectionName()).findOneAndUpdate({ contact_id: contact_id },
+                                                      { $set: { last_read: new Date() } },
+                                                      { upsert: true, new: true },
+
+    function(err, doc) {
+      if (err) {
+        handleError(res, err.message, "Failed to get contact");
+      } else {
+        res.status(200).json(doc);
+      }
+    }
+  );
 });
 
 /*  "/api/contacts/:id"
@@ -87,7 +91,8 @@ app.post("/api/contacts", function(req, res) {
  */
 
 app.get("/api/contacts/:id", function(req, res) {
-  db.collection(CONTACTS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+  var db = mongoUtil.getDb();
+  db.collection(mongoUtil.getCollectionName()).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
     if (err) {
       handleError(res, err.message, "Failed to get contact");
     } else {
@@ -100,7 +105,8 @@ app.put("/api/contacts/:id", function(req, res) {
   var updateDoc = req.body;
   delete updateDoc._id;
 
-  db.collection(CONTACTS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
+  var db = mongoUtil.getDb();
+  db.collection(mongoUtil.getCollectionName()).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
     if (err) {
       handleError(res, err.message, "Failed to update contact");
     } else {
@@ -111,7 +117,8 @@ app.put("/api/contacts/:id", function(req, res) {
 });
 
 app.delete("/api/contacts/:id", function(req, res) {
-  db.collection(CONTACTS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
+  var db = mongoUtil.getDb();
+  db.collection(mongoUtil.getCollectionName()).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
     if (err) {
       handleError(res, err.message, "Failed to delete contact");
     } else {
