@@ -8,6 +8,10 @@ var CONTACTS_COLLECTION = "contacts";
 var app = express();
 app.use(bodyParser.json());
 
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
+
 // Create a database variable outside of the
 // database connection callback to reuse the connection pool in your app.
 var db;
@@ -35,6 +39,10 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
+
+app.get('/', function(request, response) {
+  response.render('pages/index');
+});
 
 // CONTACTS API ROUTES BELOW
 
