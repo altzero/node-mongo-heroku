@@ -8,6 +8,7 @@
   "main": "server.js",
   "scripts": {
     "start": "heroku local web",
+    "start-dev": "nodemon --exec npm run start",
     "test": "node test.js"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
     "mongodb": "^2.2.31"
   },
   "devDependencies": {
+    "nodemon": "^1.11.0",
     "request": "^2.81.0",
     "tape": "^4.7.0"
   },
