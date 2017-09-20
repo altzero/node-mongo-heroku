@@ -3,6 +3,7 @@
 - Node.js
 - [Express 4](http://expressjs.com/)
 - handlebars
+- scss
 - MongoDB
 
 ## Dev setup
