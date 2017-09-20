@@ -1,10 +1,13 @@
-# node.js mongo starter app
+# node-express-mongo-sample
 
-A barebones Node.js app using [Express 4](http://expressjs.com/) that runs on heroku.
+- Node.js
+- [Express 4](http://expressjs.com/)
+- handlebars
+- MongoDB
 
 ## Dev setup
 
-install mongo
+### install mongo
 
 `$ brew install mongodb`
 
@@ -19,25 +22,25 @@ add .env file to project root with mongodb uri
 MONGODB_URI=mongodb://localhost
 ```
 
+- `$ npm install`
+
+
 ## Running Locally
 
 Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cli.heroku.com/) installed.
 
 ```sh
-$ npm install
 $ npm run start-dev
 ```
 
 Your app should now be running via nodemon (detects local updates) on [localhost:5000](http://localhost:5000/).
 
 
-## Documentation
+## resources
 
-For more information about using Node.js on Heroku, see these Dev Center articles:
+https://devcenter.heroku.com/articles/node-best-practices
+https://github.com/lelylan/simple-oauth2
 
-- [Getting Started with Node.js on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
-- [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
-- [Node.js on Heroku](https://devcenter.heroku.com/categories/nodejs)
-- [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
-- [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
-
+### background jobs
+https://github.com/Automattic/kue
+https://github.com/OptimalBits/bull
